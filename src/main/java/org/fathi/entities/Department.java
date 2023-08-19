@@ -18,6 +18,22 @@ public class Department {
     @OneToMany(mappedBy = "department")
     private List<Student> students;
 
+    public Department() {
+    }
+
+    public Department(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -42,11 +58,14 @@ public class Department {
         this.students = students;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", students=" + students +
+                '}';
     }
 }

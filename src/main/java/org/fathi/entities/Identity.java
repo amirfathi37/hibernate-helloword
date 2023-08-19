@@ -20,6 +20,22 @@ public class Identity {
     @JoinColumn(name = "fk_student_id", referencedColumnName = "id")
     private Student student;
 
+    public Identity() {
+    }
+
+    public Identity(Date loginDate, Boolean hasSupsit) {
+        this.loginDate = loginDate;
+        this.hasSupsit = hasSupsit;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public Date getLoginDate() {
         return loginDate;
     }
@@ -36,11 +52,21 @@ public class Identity {
         this.hasSupsit = hasSupsit;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Student getStudent() {
+        return student;
     }
 
-    public Long getId() {
-        return id;
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    @Override
+    public String toString() {
+        return "Identity{" +
+                "id=" + id +
+                ", loginDate=" + loginDate +
+                ", hasSupsit=" + hasSupsit +
+                ", student=" + student +
+                '}';
     }
 }

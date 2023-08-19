@@ -15,14 +15,16 @@ public class Course {
     private String name;
     @Column(name = "C_UNIT")
     private Integer unit;
-
     @ManyToMany(mappedBy = "courses")
 
     List<Student> students;
 
-    @Override
-    public String toString() {
-        return "Course{" + "id=" + id + ", name='" + name + '\'' + ", unit=" + unit + ", students=" + students + '}';
+    public Course() {
+    }
+
+    public Course(String name, Integer unit) {
+        this.name = name;
+        this.unit = unit;
     }
 
     public Long getId() {
@@ -55,5 +57,10 @@ public class Course {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" + "id=" + id + ", name='" + name + '\'' + ", unit=" + unit + ", students=" + students + '}';
     }
 }

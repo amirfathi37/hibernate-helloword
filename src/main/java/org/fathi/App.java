@@ -15,28 +15,12 @@ public class App {
     public static void main(String[] args) {
 
         List<Course> courses = new ArrayList<>();
-        Course chemistry = new Course();
-        chemistry.setName("chemistry");
-        chemistry.setUnit(3);
-        Course phisic = new Course();
-        phisic.setName("phisic");
-        phisic.setUnit(2);
+        courses.add(new Course("programming", 4));
+        courses.add(new Course("software", 3));
 
-        courses.add(chemistry);
-        courses.add(phisic);
-
-        Identity identity = new Identity();
-        identity.setLoginDate(new Date());
-        identity.setHasSupsit(true);
-
-        Department department = new Department();
-        department.setName("IT");
-        department.setAddress("Qom");
-
-        Degree degree = new Degree();
-        degree.setSubmitDate(new Date());
-        degree.setValid(true);
-
+        Identity identity = new Identity(new Date(), true);
+        Department department = new Department("IT", "Qom");
+        Degree degree = new Degree(new Date(), true);
 
         Student student = new Student
                 ("Ramesh",
@@ -47,12 +31,13 @@ public class App {
                         department,
                         degree,
                         Nationality.IRANIAN);
+        degree.setStudent(student);
+        identity.setStudent(student);
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(department);
-            degree.setStudent(student);
-            session.save(student);
+            session.persist(student);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -63,8 +48,10 @@ public class App {
         }
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List<Student> students = session.createQuery("from Student", Student.class).list();
-            students.forEach(s -> System.out.println(s.getFirstName() + " " + s.getCourses().toString()));
+            List<Student> students = session.createQuery
+                            ("from Student t where t.degree.isValid", Student.class)
+                    .list();
+            students.forEach(s -> System.out.println(s.getFirstName() + " " + s.getLastName()));
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

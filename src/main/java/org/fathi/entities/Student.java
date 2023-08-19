@@ -1,7 +1,6 @@
 package org.fathi.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Where;
 import org.hibernate.annotations.WhereJoinTable;
 
 import java.util.List;
@@ -28,14 +27,14 @@ public class Student {
     @JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "STUDENT_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
     List<Course> courses;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "student")
     private Identity identity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_department_id", referencedColumnName = "id")
     private Department department;
 
-    @OneToOne(mappedBy = "student",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
     @WhereJoinTable(clause = "isActive = true")
     private Degree degree;
 
@@ -53,7 +52,7 @@ public class Student {
                    List<Course> courses,
                    Identity identity,
                    Department department,
-                   Degree degree ,
+                   Degree degree,
                    Nationality nationality) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -135,5 +134,20 @@ public class Student {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", courses=" + courses +
+                ", identity=" + identity +
+                ", department=" + department +
+                ", degree=" + degree +
+                ", nationality=" + nationality +
+                '}';
     }
 }

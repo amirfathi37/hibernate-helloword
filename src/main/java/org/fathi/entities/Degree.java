@@ -18,8 +18,16 @@ public class Degree {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "STUDENT_ID" , referencedColumnName = "id")
+    @JoinColumn(name = "STUDENT_ID", referencedColumnName = "id")
     private Student student;
+
+    public Degree() {
+    }
+
+    public Degree(Date submitDate, boolean isValid) {
+        this.submitDate = submitDate;
+        this.isValid = isValid;
+    }
 
     public Date getSubmitDate() {
         return submitDate;
@@ -51,5 +59,15 @@ public class Degree {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Degree{" +
+                "id=" + id +
+                ", submitDate=" + submitDate +
+                ", isValid=" + isValid +
+                ", student=" + student +
+                '}';
     }
 }
