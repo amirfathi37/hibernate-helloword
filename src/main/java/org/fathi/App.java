@@ -1,61 +1,46 @@
 package org.fathi;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
+import jakarta.persistence.TypedQuery;
 import org.fathi.conf.HibernateUtil;
-import org.fathi.entities.*;
+import org.fathi.entities.Course;
+import org.fathi.entities.Degree;
+import org.fathi.entities.Student;
+import org.fathi.services.SaveService;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
 
-        List<Course> courses = new ArrayList<>();
-        courses.add(new Course("programming", 4));
-        courses.add(new Course("software", 3));
-
-        Identity identity = new Identity(new Date(), true);
-        Department department = new Department("IT", "Qom");
-        Degree degree = new Degree(new Date(), true);
-
-        Student student = new Student
-                ("Ramesh",
-                        "Fadatare",
-                        "rameshfadatare@javaguides.com",
-                        courses,
-                        identity,
-                        department,
-                        degree,
-                        Nationality.IRANIAN);
-        degree.setStudent(student);
-        identity.setStudent(student);
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.persist(department);
-            session.persist(student);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                e.printStackTrace();
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
+        SaveService.saveDefaultData();
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List<Student> students = session.createQuery
-                            ("from Student t where t.degree.isValid", Student.class)
-                    .list();
-            students.forEach(s -> System.out.println(s.getFirstName() + " " + s.getLastName()));
+//            List<Student> students = session.createQuery
+//                            ("from Student t where t.degree.isValid", Student.class)
+//                    .list();
+//            students.forEach(s -> System.out.println(s.getFirstName() + " " + s.getLastName()));
+
+            Query<Student> studentQuery = session.createQuery("from Student s where s.id =: iddd", Student.class)
+                    .setParameter("iddd", 1);
+            Student studentRes = (Student) studentQuery.getSingleResult();
+            System.out.println(studentRes.getFirstName() + " " + studentRes.getLastName());
+
+
+            TypedQuery<Degree> typeQuery = session.createQuery
+                    ("from Degree d where d.isValid = true", Degree.class);
+            List<Degree> resultList = typeQuery.getResultList();
+            resultList.stream()
+                    .forEach(degree -> System.out.println(degree.getSubmitDate() + " " + degree.isValid()));
+
+            Query<Course> courseQuery = session.createNamedQuery("course.getAll", Course.class);
+            List<Course> courses = courseQuery.list();
+            courses.stream()
+                    .forEach(course -> System.out.println(course.getStudents().size()));
+
+
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             e.printStackTrace();
         }
     }

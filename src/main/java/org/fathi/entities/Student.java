@@ -23,7 +23,7 @@ public class Student {
     @Column(name = "S_EMAIL")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     @JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "STUDENT_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
     List<Course> courses;
 

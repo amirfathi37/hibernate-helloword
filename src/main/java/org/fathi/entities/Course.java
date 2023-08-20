@@ -1,11 +1,18 @@
 package org.fathi.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
 @Entity
 @Table(name = "TBL_COURSE")
+@NamedQuery(name = "course.getAll",
+        query = "select c from Course c left join fetch c.students"
+)
+//@NamedQuery(name = "course.getAll",
+//        query = "select c from Course c"
+//)
 public class Course {
 
     @Id
@@ -15,8 +22,8 @@ public class Course {
     private String name;
     @Column(name = "C_UNIT")
     private Integer unit;
-    @ManyToMany(mappedBy = "courses")
-
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+//    @BatchSize(size = 10)
     List<Student> students;
 
     public Course() {
@@ -61,6 +68,6 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{" + "id=" + id + ", name='" + name + '\'' + ", unit=" + unit + ", students=" + students + '}';
+        return "Course{" + "id=" + id + ", name='" + name + '\'' + ", unit=" + unit + '}';
     }
 }

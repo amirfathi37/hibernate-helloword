@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "TBL_DEGREE")
-@Where(clause = "D_IS_VALID = false")
+@Where(clause = "D_IS_VALID = true")
 public class Degree {
     @Id
     private Long id;
