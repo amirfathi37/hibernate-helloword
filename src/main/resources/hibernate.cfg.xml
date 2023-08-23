@@ -9,7 +9,7 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">Amir12345</property>
         <!-- JDBC connection pool settings ... using built-in test pool -->
-        <property name="connection.pool_size">10</property>
+        <property name="connection.pool_size">1000</property>
         <!-- Select our SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <!-- Echo the SQL to stdout -->
@@ -25,5 +25,8 @@
         <mapping class="org.fathi.entities.Identity"/>
         <mapping class="org.fathi.entities.Department"/>
         <mapping class="org.fathi.entities.Degree"/>
+        <mapping class="org.fathi.entities.Phone"/>
+        <mapping class="org.fathi.entities.Item"/>
+        <mapping class="org.fathi.entities.ColoredItem"/>
     </session-factory>
 </hibernate-configuration>

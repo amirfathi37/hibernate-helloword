@@ -1,7 +1,6 @@
 package org.fathi.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
@@ -18,9 +17,9 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "C_NAME", length = 20)
+    @Column(name = "NAME", length = 20)
     private String name;
-    @Column(name = "C_UNIT")
+    @Column(name = "UNIT")
     private Integer unit;
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
 //    @BatchSize(size = 10)

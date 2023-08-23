@@ -7,13 +7,14 @@ import java.util.Date;
 
 @Entity
 @Table(name = "TBL_DEGREE")
-@Where(clause = "D_IS_VALID = true")
+@Where(clause = "IS_VALID = true")
 public class Degree {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "D_SUBMIT_DATE")
+    @Column(name = "SUBMIT_DATE")
     private Date submitDate;
-    @Column(name = "D_IS_VALID")
+    @Column(name = "IS_VALID")
     private boolean isValid;
 
     @OneToOne

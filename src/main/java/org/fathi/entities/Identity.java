@@ -11,13 +11,13 @@ public class Identity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "I_LOGIN_DATE")
+    @Column(name = "LOGIN_DATE")
     private Date loginDate;
-    @Column(name = "I_HAS_SUPSIT")
+    @Column(name = "HAS_SUPSIT")
     private Boolean hasSupsit;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_student_id", referencedColumnName = "id")
+    @JoinColumn(name = "FK_STUDENT_ID", referencedColumnName = "id")
     private Student student;
 
     public Identity() {

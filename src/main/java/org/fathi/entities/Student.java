@@ -1,6 +1,8 @@
 package org.fathi.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.WhereJoinTable;
 
 import java.util.List;
@@ -8,38 +10,41 @@ import java.util.List;
 @Entity
 @Table(name = "TBL_STUDENT")
 public class Student {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "S_FIRST_NAME")
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
-    @Column(name = "S_LAST_NAME")
+    @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "S_EMAIL")
+    @Column(name = "EMAIL")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
-    @JoinTable(name = "student_course", joinColumns = @JoinColumn(name = "STUDENT_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "STUDENT_COURSE", joinColumns = @JoinColumn(name = "STUDENT_ID"), inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
     List<Course> courses;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "student")
     private Identity identity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_department_id", referencedColumnName = "id")
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "FK_DEPARTMENT_ID", referencedColumnName = "id")
     private Department department;
 
-    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @WhereJoinTable(clause = "isActive = true")
     private Degree degree;
 
     @Enumerated(EnumType.STRING)
     private Nationality nationality;
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Phone> phones;
 
 
     public Student() {
@@ -53,7 +58,8 @@ public class Student {
                    Identity identity,
                    Department department,
                    Degree degree,
-                   Nationality nationality) {
+                   Nationality nationality,
+                   List<Phone> phones) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -62,6 +68,15 @@ public class Student {
         this.department = department;
         this.degree = degree;
         this.nationality = nationality;
+        this.phones = phones;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
     public Nationality getNationality() {

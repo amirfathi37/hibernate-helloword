@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "tbl_department")
+@Table(name = "TBL_DEPARTMENT")
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "D_NAME")
+    @Column(name = "NAME")
     private String name;
-    @Column(name = "D_ADDRESS")
+    @Column(name = "ADDRESS")
     private String address;
 
     @OneToMany(mappedBy = "department")
