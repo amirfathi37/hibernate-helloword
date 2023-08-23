@@ -44,6 +44,7 @@ public class Student {
     private Nationality nationality;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("number")
     private List<Phone> phones;
 
 

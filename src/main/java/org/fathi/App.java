@@ -7,10 +7,7 @@ import org.fathi.entities.*;
 import org.fathi.services.SaveService;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.hibernate.query.criteria.JpaCriteriaQuery;
-import org.hibernate.query.criteria.JpaPredicate;
-import org.hibernate.query.criteria.JpaRoot;
+import org.hibernate.query.criteria.*;
 
 import java.util.List;
 
@@ -72,7 +69,7 @@ public class App {
                             o -> System.out.println(o.toString())
                     );
 
-//          fetch Item with criteria
+//          fetch ColoredItem with criteria
             HibernateCriteriaBuilder cbColoredItem = session.getCriteriaBuilder();
             JpaCriteriaQuery<ColoredItem> qy = cbColoredItem.createQuery(ColoredItem.class);
             JpaRoot<ColoredItem> coloredItem = qy.from(ColoredItem.class);
@@ -93,6 +90,9 @@ public class App {
             JpaPredicate gradePredict = coloredItem.get("grade").in("A", "B");
 
             JpaPredicate colorAndGrade = cbColoredItem.and(colorPredict, gradePredict);
+
+            JpaOrder gradeOder = cbColoredItem.asc(coloredItem.get("grade"));
+            qy.orderBy(gradeOder);
 
             qy.select(coloredItem).
                     where(colorAndGrade);
