@@ -1,5 +1,11 @@
 package org.fathi;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Root;
 import org.fathi.conf.HibernateUtil;
@@ -12,9 +18,27 @@ import org.hibernate.query.criteria.*;
 import java.util.List;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonProcessingException {
 
         SaveService.saveDefaultData();
+        List<Workspace> workspaceList = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Workspace> fromWorkspaceW = session.createQuery("from Workspace w where w.parent is null ", Workspace.class);
+            workspaceList = fromWorkspaceW.list();
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setVisibility(
+                    PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY
+
+            );
+            String s1 = objectMapper.writeValueAsString(workspaceList);
+            GsonBuilder gsonBuilder = new GsonBuilder()
+                    .registerTypeAdapter(Workspace.class, new WorkspaceTypeAdapter());
+            Gson gson = gsonBuilder.create();
+            String s = gson.toJson(workspaceList);
+
+        }
+        String s1 = new ObjectMapper().writeValueAsString(workspaceList);
+        System.out.println(s1);
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 

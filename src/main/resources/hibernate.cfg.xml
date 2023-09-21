@@ -28,5 +28,7 @@
         <mapping class="org.fathi.entities.Phone"/>
         <mapping class="org.fathi.entities.Item"/>
         <mapping class="org.fathi.entities.ColoredItem"/>
+        <mapping class="org.fathi.entities.Workspace"/>
+        <mapping class="org.fathi.entities.Workspace2"/>
     </session-factory>
 </hibernate-configuration>

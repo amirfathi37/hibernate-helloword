@@ -12,6 +12,30 @@ import java.util.List;
 
 public class SaveService {
     public static void saveDefaultData() {
+
+        Workspace parentWS = new Workspace("azerbaijan", null);
+        Workspace wSLvl1 = new Workspace("tabriz", parentWS);
+        Workspace wSLvl2 = new Workspace("marava", wSLvl1);
+        Session session1 = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction1 = session1.beginTransaction();
+        session1.persist(parentWS);
+        session1.persist(wSLvl1);
+        session1.persist(wSLvl2);
+        transaction1.commit();
+        session1.close();
+
+        Workspace2 parentWS1 = new Workspace2("azerbaijan", null);
+        Workspace2 WwSLvl1 = new Workspace2("tabriz", parentWS1);
+        Workspace2 WwSLvl2 = new Workspace2("marava", WwSLvl1);
+        Session session2 = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction2 = session2.beginTransaction();
+        session2.persist(parentWS1);
+        session2.persist(WwSLvl1);
+        session2.persist(WwSLvl2);
+        transaction2.commit();
+        session2.close();
+
+
         List<Course> courses = new ArrayList<>();
         courses.add(new Course("programming", 4));
         courses.add(new Course("software", 3));
